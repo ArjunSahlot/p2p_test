@@ -1,14 +1,19 @@
+console.log("creating connection");
 let peer = new Peer();
+console.log("created connection" + peer.id);
 
 document.getElementById("create").addEventListener("click", () => {
+    console.log("creating connection");
     peer = new Peer();
     peer.on("open", (id) => {
         document.getElementById("cid").innerHTML = id;
+        console.log("created connection" + id);
     });
 });
 
 document.getElementById("join").addEventListener("click", () => {
     console.log("connecting");
+    console.log(document.getElementById("inp").value);
     peer.connect(document.getElementById("inp").value);
     console.log("sent connection");
 });
