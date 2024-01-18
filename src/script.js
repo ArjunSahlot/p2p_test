@@ -1,33 +1,41 @@
-console.log("creating connection");
-let peer = new Peer();
-console.log("created connection" + peer.id);
-
 document.getElementById("create").addEventListener("click", () => {
-    console.log("creating connection");
-    peer = new Peer();
+    const peer = new Peer();
+
     peer.on("open", (id) => {
+        console.log(`My peer ID is: ${id}`);
         document.getElementById("cid").innerHTML = id;
-        console.log("created connection" + id);
+    });
+
+    peer.on("connection", (connection) => {
+        console.log("Connection received");
+        setupConnectionHandler(connection);
     });
 });
 
 document.getElementById("join").addEventListener("click", () => {
-    console.log("connecting");
-    console.log(document.getElementById("inp").value);
-    peer.connect(document.getElementById("inp").value);
-    console.log("sent connection");
+    const otherid = document.getElementById("inp").value;
+    if (!otherid) {
+        alert("Please enter an ID to conect to");
+        return;
+    }
+
+    const peer = new Peer();
+    const connection = peer.connect(otherid);
+    console.log(`Sent connection to ${otherid}`);
+
+    setupConnectionHandler(connection);
 });
 
-peer.on("connection", (conn) => {
-    console.log("received connection");
-    conn.on("open", () => {
-        console.log("sending data");
-        conn.send("from " + peer.id);
-        console.log("sent data");
+function setupConnectionHandler(conn) {
+    currentConnection = conn;
 
-        conn.on("data", (data) => {
-            console.log("received data");
-            console.log(data);
-        });
+    conn.on('open', () => {
+        console.log('Connection established.');
     });
-});
+
+    // Receive messages
+    conn.on('data', (data) => {
+        console.log('Received:', data);
+    });
+}
+
