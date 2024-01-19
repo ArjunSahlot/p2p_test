@@ -11,12 +11,19 @@ body {
 
 .container {
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 100px;
+}
+
+.connection {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: 100px;
 }
 
-.container div {
+.connection div {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
